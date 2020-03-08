@@ -1,0 +1,26 @@
+version: '3'
+services:
+  static:
+    build: .
+    entrypoint: ["tail"]
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    command: ["-f", "/dev/null"]
+    working_dir: /app
+    volumes:
+      - ./science:/app
+  backend:
+    build: api/.
+    entrypoint: ["tail"]
+    working_dir: /app
+    command: ["-f", "/dev/null"]
+    # command: ["index.js"]
+    environment:
+      - IAM_ROLE
+    ports:
+      - "3020:3020"
+    volumes:
+      - ./api:/app
+  # redis:
+  #   image: "redis:alpine"
